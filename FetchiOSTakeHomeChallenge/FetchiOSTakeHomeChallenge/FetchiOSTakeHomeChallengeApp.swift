@@ -11,7 +11,7 @@ import SwiftUI
 struct FetchiOSTakeHomeChallengeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RecipeListView()
         }
     }
 }
