@@ -22,15 +22,13 @@ final class ImageCache {
         return directory
     }()
     
-    // Fix this to not hash, just the url
-    private func hashedFileName(for url: URL) -> String {
-        let data = Data(url.absoluteString.utf8)
-        let hash = SHA256.hash(data: data)
-        return hash.compactMap { String(format: "%02x", $0) }.joined() + ".png"
+    private func encodeFileName(for url: URL) -> String {
+        let encodedString = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? UUID().uuidString
+        return encodedString + ".png"
     }
     
     private func cacheFilePath(for url: URL) -> URL {
-        cacheDirectory.appendingPathComponent(url.lastPathComponent)
+        cacheDirectory.appendingPathComponent(encodeFileName(for: url))
     }
     
     func loadImage(from url: URL) -> UIImage? {
