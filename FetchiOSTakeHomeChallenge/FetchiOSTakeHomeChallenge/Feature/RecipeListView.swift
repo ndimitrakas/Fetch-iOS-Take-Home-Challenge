@@ -15,8 +15,8 @@ struct RecipeListView: View {
             content
                 .navigationTitle("Recipes")
                 .refreshable {
-                    // TODO: call the api again and load everything again, possibly from the cache.
-                    print("do refresh work here")
+                    recipeListViewModel.recipes = []
+                    await recipeListViewModel.fetchRecipes()
                 }
         }
         .task {
@@ -35,7 +35,7 @@ struct RecipeListView: View {
             Text("No Recipes Available")
         case .success(let recipes):
             List(recipes) { recipe in
-                RecipeRowView(recipe: recipe, viewModel: recipeListViewModel)
+                RecipeRowView(recipe: recipe)
             }
         case .error(let message):
             Text(message)

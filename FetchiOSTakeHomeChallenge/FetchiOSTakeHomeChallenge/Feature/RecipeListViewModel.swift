@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 @MainActor
-class RecipeListViewModel: ObservableObject, ImageLoader {
+class RecipeListViewModel: ObservableObject {
     
     enum ViewState {
         case loading
@@ -21,9 +21,9 @@ class RecipeListViewModel: ObservableObject, ImageLoader {
     @Published var state: ViewState = .loading
     @Published var recipes: [Recipe] = []
     private let apiService = RecipeAPIService()
-    private let imageCache = ImageCache()
     
     func fetchRecipes() async {
+        guard case .loading = state else { return }
         state = .loading
         do {
             self.recipes = try await apiService.fetchRecipes()
@@ -35,9 +35,5 @@ class RecipeListViewModel: ObservableObject, ImageLoader {
         } catch {
             state = .error(error.localizedDescription)
         }
-    }
-    
-    func loadImage(from url: URL) async -> UIImage? {
-        return await imageCache.loadImage(from: url)
     }
 }
