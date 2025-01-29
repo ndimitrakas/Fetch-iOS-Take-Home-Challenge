@@ -18,19 +18,18 @@ class RecipeListViewModel: ObservableObject {
         case error(String)
     }
     
-    @Published var state: ViewState = .loading
-    @Published var recipes: [Recipe] = []
+    @Published var state: ViewState = .empty
     private let apiService = RecipeAPIService()
     
     func fetchRecipes() async {
-        guard case .loading = state else { return }
+        if case .loading = state { return }
         state = .loading
         do {
-            self.recipes = try await apiService.fetchRecipes()
-            if self.recipes.isEmpty {
+            let recipes = try await apiService.fetchRecipes()
+            if recipes.isEmpty {
                 state = .empty
             } else {
-                state = .success(self.recipes)
+                state = .success(recipes)
             }
         } catch {
             state = .error(error.localizedDescription)

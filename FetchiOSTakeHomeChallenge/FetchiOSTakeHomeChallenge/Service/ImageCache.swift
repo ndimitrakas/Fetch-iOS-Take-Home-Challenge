@@ -22,6 +22,7 @@ final class ImageCache {
         return directory
     }()
     
+    // Fix this to not hash, just the url
     private func hashedFileName(for url: URL) -> String {
         let data = Data(url.absoluteString.utf8)
         let hash = SHA256.hash(data: data)
@@ -29,7 +30,7 @@ final class ImageCache {
     }
     
     private func cacheFilePath(for url: URL) -> URL {
-        cacheDirectory.appendingPathComponent(hashedFileName(for: url))
+        cacheDirectory.appendingPathComponent(url.lastPathComponent)
     }
     
     func loadImage(from url: URL) -> UIImage? {
