@@ -7,11 +7,10 @@
 
 import SwiftUI
 
-struct AsyncImageView<ViewModel: ImageLoader>: View {
-    let url: URL?
-    let viewModel: ViewModel
-    
+struct AsyncImageView: View {
     @State private var image: UIImage?
+    @State private var isLoading = false
+    let url: URL?
     
     var body: some View {
         Group {
@@ -19,18 +18,39 @@ struct AsyncImageView<ViewModel: ImageLoader>: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-            } else {
+            } else if isLoading {
                 ProgressView()
-                    .task {
-                        if let url = url, let fetchedImage = await viewModel.loadImage(from: url) {
-                            image = fetchedImage
-                        }
-                    }
+            } else {
+                Color.gray.opacity(0.3)
             }
+        }
+        .onAppear {
+            loadImage()
+        }
+    }
+    
+    private func loadImage() {
+        guard let url = url, !isLoading else { return }
+        isLoading = true
+        
+        if let cachedImage = ImageCache.shared.loadImage(from: url) {
+            image = cachedImage
+            isLoading = false
+            return
+        }
+        
+        Task {
+            do {
+                let (data, _) = try await URLSession.shared.data(from: url)
+                if let fetchedImage = UIImage(data: data) {
+                    image = fetchedImage
+                    ImageCache.shared.saveImage(fetchedImage, for: url)
+                }
+            } catch {
+                print("Failed to load image from URL: \(error)")
+            }
+            isLoading = false
         }
     }
 }
 
-//#Preview {
-//    AsyncImageView()
-//}

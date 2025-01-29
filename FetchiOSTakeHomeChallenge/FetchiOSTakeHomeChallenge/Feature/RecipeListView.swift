@@ -15,31 +15,30 @@ struct RecipeListView: View {
             content
                 .navigationTitle("Recipes")
                 .refreshable {
-                    // TODO: call the api again and load everything again, possibly from the cache.
-                    print("do refresh work here")
+                    await recipeListViewModel.fetchRecipes()
                 }
         }
         .task {
             await recipeListViewModel.fetchRecipes()
         }
-        .environmentObject(recipeListViewModel)
     }
     
     @ViewBuilder
     private var content: some View {
-        switch recipeListViewModel.state {
-            
-        case .loading:
-            ProgressView("Loading Recipes")
-        case .empty:
-            Text("No Recipes Available")
-        case .success(let recipes):
-            List(recipes) { recipe in
-                RecipeRowView(recipe: recipe, viewModel: recipeListViewModel)
+        List {
+            switch recipeListViewModel.state {
+            case .loading:
+                ProgressView("Loading Recipes")
+            case .empty:
+                Text("No Recipes Available")
+            case .success(let recipes):
+                ForEach(recipes) { recipe in
+                    RecipeRowView(recipe: recipe)
+                }
+            case .error(let message):
+                Text(message)
+                    .foregroundColor(.red)
             }
-        case .error(let message):
-            Text(message)
-                .foregroundColor(.red)
         }
     }
 }

@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-struct RecipeRowView<ViewModel: ImageLoader>: View {
+struct RecipeRowView: View {
     let recipe: Recipe
-    let viewModel: ViewModel
     
     var body: some View {
         HStack {
-            AsyncImageView(url: recipe.photoURLSmall, viewModel: viewModel)
+            AsyncImageView(url: recipe.photoURLSmall)
                 .frame(width: 50, height: 50)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             
