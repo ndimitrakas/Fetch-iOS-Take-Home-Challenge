@@ -1,13 +1,22 @@
 # Fetch iOS Take Home Challenge
  
-### Summary: Include screen shots or a video of your app highlighting its features
+### Summary: 
+- The app fetches and displays recipes using Swift Concurrency (async/await), includes a custom disk-based image cache, and handles network errors, empty states, and malformed data. 
 
 ### Focus Areas: What specific areas of the project did you prioritize? Why did you choose to focus on these areas?
+- I chose to focus more on the caching and error handling.
+- I wanted to focus on these areas because I felt the business requirements were already fulfilled with the singular view (and being able to refresh the view).
+- I felt the performance and stability of the application were more important.
 
-### Time Spent: Approximately how long did you spend working on this project? How did you allocate your time?
+### Time Spent:
+- Spent around 6–8 hours
+- API integration (1.5h)
+- Image caching (2h)
+- Testing (3h)
 
 ### Trade-offs and Decisions: Did you make any significant trade-offs in your approach?
+- I kept the UI minimal, avoiding detail views to focus on performance and essential functionality.
 
-### Weakest Part of the Project: What do you think is the weakest part of your project?
-
-### Additional Information: Is there anything else we should know? Feel free to share any insights or constraints you encountered.
+### Weakest Part of the Project:
+- App does not support sorting or filtering
+- No way to clear the cache
