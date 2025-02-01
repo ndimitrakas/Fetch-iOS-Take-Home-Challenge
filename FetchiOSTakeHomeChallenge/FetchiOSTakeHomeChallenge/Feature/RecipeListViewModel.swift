@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-@MainActor
 class RecipeListViewModel: ObservableObject {
     
     enum ViewState {
@@ -21,6 +20,7 @@ class RecipeListViewModel: ObservableObject {
     @Published var state: ViewState = .empty
     private let apiService = RecipeAPIService()
     
+    @MainActor
     func fetchRecipes() async {
         if case .loading = state { return }
         state = .loading
