@@ -8,13 +8,13 @@
 import Testing
 @testable import FetchiOSTakeHomeChallenge
 
+@Suite
 struct FetchiOSTakeHomeChallengeAPIServiceTests {
 
     let apiService = RecipeAPIService()
     let emptyAPIService = RecipeAPIService(urlString: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-empty.json")
     let malformedAPIService = RecipeAPIService(urlString: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-malformed.json")
 
-    
     @Test func testFetchRecipes_Success() async throws {
         let recipes = try await apiService.fetchRecipes()
         

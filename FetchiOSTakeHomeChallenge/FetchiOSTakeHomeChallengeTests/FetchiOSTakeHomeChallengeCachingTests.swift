@@ -10,6 +10,7 @@ import Testing
 import Foundation
 import UIKit
 
+@Suite
 struct FetchiOSTakeHomeChallengeCachingTests {
     
     let imageCache = ImageCache()
